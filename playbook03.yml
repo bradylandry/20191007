@@ -1,0 +1,36 @@
+---
+- name: Bootstrapping and new user
+  hosts: all
+  gather_facts: yes
+
+  vars: 
+          uid: 1999
+          usertocreate: pumpkinking
+          grouptocreate: halloween
+
+  vars_files:
+          # - ~/pb03.yml
+          - vars/pb03.yml
+  tasks:
+  #       - name: "ensure python is installed on target hosts"
+  #         raw: "apt install -y python3-pip"
+  #         become: yes
+
+         - name: create a new group
+           group:
+                   name: "{{ grouptocreate }}"
+                   state: present
+           become: yes
+           
+         - name: Add "{{ grouptocreate }}" with uid "{{ uid }}" and group "{{ usertocreate }}"
+           user:
+                   name: "{{ usertocreate }}"
+                   comment: "trying to create a user"
+                   state: present
+                   shell: /bin/bash
+                   system: no
+                   createhome: yes
+                   group: "{{ grouptocreate }}"
+                   uid: "{{ uid }}"
+           become: yes
+           
