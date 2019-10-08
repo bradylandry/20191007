@@ -1,0 +1,39 @@
+---
+- name: Building a file from a JSON lookup
+  hosts: planetexpress
+  gather_facts: yes
+
+  vars:
+          issastros: "{{ lookup('url', 'http://api.open-notify.org/astros.json', split_lines=False) }}"
+  tasks:
+          ## Your job is to write one or two tasks
+          ## that move the data contained in ISSASTROS
+          ## and place in a file ~/isspassengers.txt
+          #on each of the remote hosts
+          #
+          #
+          - name: Display issastros
+            debug:
+                    var: issastros
+            register: results
+
+          - name: Write Json output to a file
+            copy:
+              content: "{{ results }}"
+              dest: files/issastros-json.txt
+              
+- name: Copy Json txt to hosts
+  hosts: planetexpress
+  gather_facts: yes
+
+  tasks:
+    -name: copy just the names to a file on remote hosts
+     lineinfile:
+       path: ~/astronames.txt
+       create: yes
+     loop: "{{ issastrox.people }}"
+       src:
+          # if you finish the ablove challeng then
+          # only write the astro names into ~/issnames.txt
+          # on each remote hosts          
+
