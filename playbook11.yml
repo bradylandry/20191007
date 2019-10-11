@@ -1,0 +1,60 @@
+---
+- name: reviewing looping
+  hosts: localhost
+  gather_facts: yes
+
+  vars_prompt:
+          - name: csi
+            prompt: "Provide a list of comma seperated interfaces"
+            private: no   
+  vars_files:
+          - files/moviesdecades.yml
+
+  vars:
+          ethList:
+                  - eth0
+                  - eth1
+                  - eth2
+                  - eth3
+                    
+ #pre-tasks  
+  tasks:
+          - name: demo a tiny loop
+            debug:
+                    msg: "Prints stuff out {{ item }}"
+            loop: "{{ ethList }}" 
+
+          - name: intro to lop control
+            debug:
+                  var: item
+            loop:
+                  - server1
+                  - server2
+                  - server3
+          
+            loop_control:
+                  pause: 3
+
+          - name: loop accross complex data structure
+            debug: 
+                msg: "{{ item.name }} belongs in the {{ item.groups }} asile"
+            loop:
+                 - { name: 'orange', groups: fruit }
+                 - { name: "lemon", groups: fruit }
+                 - { name: cookie, groups: snack }
+                 - { name: carrot, groups: vegatables }
+
+          - name: loop across data in /files/moviesdecades.yml
+            debug:
+                 msg: "{{ item.movies }} was released in the {{ item.decades }}"
+            loop: "{{ moviesdecades }}"
+          
+          - name: try looping across csi
+            debug:
+                    var: item
+            loop: "{{ csi.split(', ') }}"
+ #post_tasks
+ #
+ #
+ #handlers
+ #

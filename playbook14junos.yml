@@ -1,0 +1,36 @@
+---
+- name
+
+- name: Writing playbooks for Juniper
+  hosts: JuniperSwitchesWest
+  connection: netconf
+
+  vars:
+          creds:
+                  host: {{ ansible_host }}
+                  port: {{ ansible_port }}
+                  password: {{ hostpass }}
+
+  roles:
+          - juniper.junos
+
+  tasks:
+          # an alternative to this method would be running this command ourselves
+          # at the CLI and 'forever' installing ncclient. the method below will
+          # deploy 'ncclient' within a virtualevnv, and be thrownout after runtime
+          - name: Install the NC Client
+            pip:
+                    name: ncclient
+            delegate_to: localhost
+
+          - name: ensure the output directory exists
+            file:
+                    state: directory
+                    path: ~/output/
+            delegate_to: localhost        
+
+          - name: Testing a juniper module
+            juniper.junos.facts: 
+                provider: "{{ creds }}"
+                savedir: ~/output/
+                config_format: json

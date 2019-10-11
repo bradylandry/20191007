@@ -1,0 +1,10 @@
+---
+- name: playbook to run against dyname inventory
+  hosts: all
+
+  tasks:
+          - name: create a directory
+            file:
+                    state: directory
+                    path: ~/dyninvproof/
+

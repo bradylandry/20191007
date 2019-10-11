@@ -1,0 +1,16 @@
+#Acme Inc list of IPs
+# this list is manually unkept and changes often
+
+# backbone_bpr devices
+172.16.2.1 hoppy
+172.16.2.2 whiskers
+172.16.2.4 socks
+
+# backbone_bbr
+10.10.2.3 bender
+10.10.2.4 fry
+
+# leaf_switch
+192.168.1.1
+192.168.2.2
+

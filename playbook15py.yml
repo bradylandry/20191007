@@ -1,0 +1,10 @@
+---
+- name: Running ansible to launch my scripts
+  hosts: plantexpress
+  gather_facts: yes
+
+  tasks:
+          - name: Call the script via the script module
+            script: scripts/helloscript.py
+            args:
+                    executable: python3

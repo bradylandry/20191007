@@ -1,0 +1,31 @@
+---
+- name: Our first PALOALTO playbook
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars_files:
+          - ~/panoscreds.yml
+
+  roles:
+          - paloaltonetworks.paloaltonetworks     
+
+  tasks:
+
+          - name: Grab some facts about PanOS devices
+            panos_facts:
+                    provider: '{{ provider }}'
+                    gather_subset: ['config']
+            register: resultz
+
+          - name: what was returned to panos_facts?
+            debug: 
+                var: resultz
+
+
+          #-  name: Attempt to use a panos_address_group module
+          #  #           panos_address_group:
+          #        provider: '{{ provider }}'
+          #          name: 'SI'
+          #          dynamic_value: "'SI_Instances'"
+          #          tag: ['SI']
